@@ -6,155 +6,344 @@
   <title>Yuto Niki | Portfolio</title>
   <meta name="description" content="Personal portfolio website with profile, research, achievements, and links." />
   <script src="https://cdn.tailwindcss.com"></script>
-  <script>
+  <style>
+  @keyframes floatGlowA {
+    0%, 100% { transform: translate3d(-50%, 0, 0) scale(1); opacity: 0.22; }
+    50% { transform: translate3d(-46%, 24px, 0) scale(1.08); opacity: 0.34; }
+  }
+
+  @keyframes floatGlowB {
+    0%, 100% { transform: translate3d(0, 0, 0) scale(1); opacity: 0.14; }
+    50% { transform: translate3d(-18px, -22px, 0) scale(1.1); opacity: 0.24; }
+  }
+
+  @keyframes pulseNode {
+    0%, 100% { transform: scale(1); opacity: 0.65; box-shadow: 0 0 0 0 rgba(255,255,255,0.12); }
+    50% { transform: scale(1.18); opacity: 1; box-shadow: 0 0 0 14px rgba(255,255,255,0); }
+  }
+
+  @keyframes flowA {
+    0% { offset-distance: 0%; opacity: 0; }
+    8% { opacity: 1; }
+    92% { opacity: 1; }
+    100% { offset-distance: 100%; opacity: 0; }
+  }
+
+  @keyframes flowB {
+    0% { offset-distance: 100%; opacity: 0; }
+    8% { opacity: 1; }
+    92% { opacity: 1; }
+    100% { offset-distance: 0%; opacity: 0; }
+  }
+
+  @keyframes networkDrift {
+    0%, 100% { transform: translateY(0px) scale(1); opacity: 0.7; }
+    50% { transform: translateY(10px) scale(1.02); opacity: 1; }
+  }
+
+  @keyframes rotateEarth {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  .hero-glow-a { animation: floatGlowA 9s ease-in-out infinite; }
+  .hero-glow-b { animation: floatGlowB 12s ease-in-out infinite; }
+  .network-layer { animation: networkDrift 8s ease-in-out infinite; }
+
+  .earth-rotator {
+    position: absolute;
+    inset: 0;
+    animation: rotateEarth 42s linear infinite;
+    transform-origin: center;
+  }
+
+  .net-node {
+    animation: pulseNode 3.6s ease-in-out infinite;
+  }
+
+  .net-node.delay-1 { animation-delay: 0.8s; }
+  .net-node.delay-2 { animation-delay: 1.6s; }
+  .net-node.delay-3 { animation-delay: 2.4s; }
+  .net-node.delay-4 { animation-delay: 3.2s; }
+  .net-node.delay-5 { animation-delay: 4s; }
+  .net-node.delay-6 { animation-delay: 4.8s; }
+
+  .packet {
+    position: absolute;
+    width: 9px;
+    height: 9px;
+    border-radius: 9999px;
+    background: rgba(255,255,255,0.95);
+    box-shadow: 0 0 18px rgba(255,255,255,0.55);
+    opacity: 0;
+  }
+
+  .background-hero {
+    transition: opacity 0.35s ease;
+    will-change: opacity;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-glow-a,
+    .hero-glow-b,
+    .network-layer,
+    .earth-rotator,
+    .net-node,
+    .packet,
+    .background-hero {
+      animation: none !important;
+      transition: none !important;
+    }
+  }
+</style>
+<script>
     tailwind.config = {
       theme: {
         extend: {
           colors: {
-            base: '#0a0a0a',
-            panel: '#121212',
-            soft: '#1a1a1a',
-            line: '#2a2a2a'
+            base: '#070707',
+            panel: 'rgba(255,255,255,0.05)',
+            line: 'rgba(255,255,255,0.10)',
+            soft: '#a1a1aa'
           },
           boxShadow: {
-            soft: '0 20px 60px rgba(0,0,0,0.35)'
+            glow: '0 10px 40px rgba(255,255,255,0.06)',
+            soft: '0 24px 80px rgba(0,0,0,0.45)'
+          },
+          backdropBlur: {
+            xs: '2px'
+          },
+          fontSize: {
+            hero: ['clamp(3rem, 8vw, 6.5rem)', { lineHeight: '0.95', letterSpacing: '-0.05em' }]
           }
         }
       }
     }
   </script>
 </head>
-<body class="bg-base text-zinc-100 antialiased bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.06),transparent_32%),linear-gradient(180deg,#070707_0%,#0d0d0d_100%)]">
-  <header class="sticky top-0 z-50 border-b border-white/10 bg-black/60 backdrop-blur">
-    <div class="mx-auto flex w-[min(1040px,calc(100%-32px))] flex-col gap-4 py-4 md:flex-row md:items-center md:justify-between">
-      <div class="text-sm uppercase tracking-[0.25em] text-zinc-400">Portfolio</div>
-      <nav class="flex flex-wrap items-center gap-4 text-sm text-zinc-300">
-        <a href="#about" data-en="About" data-ja="自己紹介">About</a>
-        <a href="#research" data-en="Research" data-ja="研究">Research</a>
-        <a href="#achievements" data-en="Achievements" data-ja="成果">Achievements</a>
-        <a href="#links" data-en="Links" data-ja="リンク集">Links</a>
-        <button id="langToggle" class="rounded-full border border-line bg-zinc-950 px-4 py-2 transition hover:-translate-y-0.5 hover:border-zinc-500">日本語</button>
+<body class="min-h-screen bg-base text-zinc-100 antialiased selection:bg-white/20 selection:text-white">
+  <div id="backgroundHero" class="background-hero fixed inset-0 -z-10 overflow-hidden">
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.10),transparent_28%),linear-gradient(180deg,#040404_0%,#090909_42%,#050505_100%)]"></div>
+    <div class="hero-glow-a absolute left-1/2 top-[-10rem] h-[28rem] w-[28rem] -translate-x-1/2 rounded-full bg-white/5 blur-3xl"></div>
+    <div class="hero-glow-b absolute bottom-[-8rem] right-[-6rem] h-[22rem] w-[22rem] rounded-full bg-white/[0.04] blur-3xl"></div>
+
+    <div class="pointer-events-none absolute inset-x-0 top-0 flex h-[34rem] items-start justify-center overflow-hidden">
+      <div class="relative mt-6 h-[360px] w-[360px] md:h-[420px] md:w-[420px] opacity-90 network-layer">
+        <div class="absolute inset-0 rounded-full bg-[radial-gradient(circle_at_30%_30%,rgba(255,255,255,0.12),transparent_60%),radial-gradient(circle_at_70%_70%,rgba(255,255,255,0.08),transparent_70%)] blur-xl"></div>
+        <div class="earth-rotator">
+          <div class="absolute inset-0 rounded-full border border-white/10"></div>
+
+          <div class="absolute inset-0 flex items-center justify-center">
+            <div class="h-[80%] w-full rounded-full border border-white/10"></div>
+          </div>
+          <div class="absolute inset-0 flex items-center justify-center">
+            <div class="h-[60%] w-full rounded-full border border-white/10"></div>
+          </div>
+          <div class="absolute inset-0 flex items-center justify-center">
+            <div class="h-full w-[80%] rounded-full border border-white/10"></div>
+          </div>
+          <div class="absolute inset-0 flex items-center justify-center">
+            <div class="h-full w-[60%] rounded-full border border-white/10"></div>
+          </div>
+
+          <svg viewBox="0 0 420 420" class="absolute inset-0 h-full w-full" fill="none">
+            <circle cx="210" cy="210" r="160" stroke="rgba(255,255,255,0.15)" stroke-width="1" />
+            <ellipse cx="210" cy="210" rx="170" ry="80" stroke="rgba(255,255,255,0.12)" stroke-width="1" />
+            <ellipse cx="210" cy="210" rx="80" ry="170" stroke="rgba(255,255,255,0.12)" stroke-width="1" />
+          </svg>
+
+          <div class="packet" style="offset-path: path('M210 50 A160 160 0 1 1 209 50'); animation: flowA 6s linear infinite;"></div>
+          <div class="packet" style="offset-path: path('M40 210 A170 80 0 1 1 39 210'); animation: flowA 7s linear infinite; animation-delay:1s;"></div>
+          <div class="packet" style="offset-path: path('M210 40 A80 170 0 1 1 209 40'); animation: flowB 6.5s linear infinite; animation-delay:2s;"></div>
+          <div class="packet" style="offset-path: path('M323 97 A160 160 0 1 1 322 97'); animation: flowA 5.7s linear infinite; animation-delay:0.6s;"></div>
+          <div class="packet" style="offset-path: path('M100 210 A170 80 0 1 1 99 210'); animation: flowB 7.3s linear infinite; animation-delay:2.2s;"></div>
+
+          <div class="net-node absolute left-[60%] top-[20%] h-3 w-3 rounded-full bg-white"></div>
+          <div class="net-node delay-1 absolute left-[30%] top-[60%] h-3 w-3 rounded-full bg-white"></div>
+          <div class="net-node delay-2 absolute left-[70%] top-[70%] h-2.5 w-2.5 rounded-full bg-white"></div>
+          <div class="net-node delay-3 absolute left-[40%] top-[30%] h-3 w-3 rounded-full bg-white"></div>
+          <div class="net-node delay-4 absolute left-[73%] top-[30%] h-3 w-3 rounded-full bg-white"></div>
+          <div class="net-node delay-5 absolute left-[17%] top-[50%] h-2.5 w-2.5 rounded-full bg-white"></div>
+          <div class="net-node delay-6 absolute left-[48%] top-[10%] h-2.5 w-2.5 rounded-full bg-white"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <header class="sticky top-0 z-50 border-b border-white/8 bg-black/25 backdrop-blur-xl">
+    <div class="mx-auto flex w-[min(1120px,calc(100%-32px))] flex-col gap-4 py-4 md:flex-row md:items-center md:justify-between">
+      <a href="#top" class="text-[11px] uppercase tracking-[0.32em] text-zinc-400">Yuto Niki</a>
+      <nav class="flex flex-wrap items-center gap-3 text-sm text-zinc-300 md:gap-5">
+        <a href="#about" class="transition hover:text-white" data-en="About" data-ja="自己紹介">About</a>
+        <a href="#research" class="transition hover:text-white" data-en="Research" data-ja="研究">Research</a>
+        <a href="#achievements" class="transition hover:text-white" data-en="Achievements" data-ja="成果">Achievements</a>
+        <a href="#links" class="transition hover:text-white" data-en="Links" data-ja="リンク集">Links</a>
+        <button id="langToggle" class="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-zinc-200 transition hover:-translate-y-0.5 hover:border-white/20 hover:bg-white/10">日本語</button>
       </nav>
     </div>
   </header>
 
-  <main>
-    <section class="flex min-h-[88vh] items-center py-12">
-      <div class="mx-auto grid w-[min(1040px,calc(100%-32px))] gap-12 md:grid-cols-[280px_1fr] md:items-center">
-        <div class="flex justify-center">
-          <div class="h-60 w-60 overflow-hidden rounded-full border border-white/15 bg-soft shadow-soft">
-            <img src="./images/profile.jpg" alt="Profile photo" style="width: 240px; height: 240px; border: 1px solid red;" />
+  <main id="top">
+    <section class="flex min-h-[92vh] items-center py-10 md:py-16">
+      <div class="mx-auto grid w-[min(1120px,calc(100%-32px))] gap-14 md:grid-cols-[320px_1fr] md:items-center">
+        <div class="flex justify-center md:justify-start">
+          <div class="group relative h-64 w-64 flex-shrink-0 md:h-72 md:w-72">
+            <div class="absolute inset-0 rounded-full bg-white/10 blur-2xl transition duration-500 group-hover:bg-white/15"></div>
+            <div class="relative h-full w-full overflow-hidden rounded-full border border-white/15 bg-white/5 p-2 shadow-soft backdrop-blur-sm">
+              <div class="h-full w-full overflow-hidden rounded-full border border-white/10 bg-zinc-900">
+                <img src="./images/profile.jpg" alt="Profile photo" class="h-full w-full object-cover object-center" />
+              </div>
+            </div>
           </div>
         </div>
 
         <div>
-          <div class="mb-4 text-xs uppercase tracking-[0.28em] text-zinc-400" data-en="Personal Website" data-ja="個人サイト">Personal Website</div>
-          <h1 class="mb-5 text-5xl font-semibold tracking-tight md:text-7xl" data-en="Yuto Niki" data-ja="仁木 優斗">Yuto Niki</h1>
-          <p class="max-w-3xl text-base leading-8 text-zinc-300 md:text-lg"
-             data-en="Master's student, researcher, and builder. I work on networking, AI, and practical systems, and I enjoy turning ideas into things people can actually use."
-             data-ja="大学院生・研究者・開発者。ネットワーク、AI、実用システムを中心に、アイデアを実際に使える形へ落とし込むことが好きです。">
-            Master's student, researcher, and builder. I work on networking, AI, and practical systems, and I enjoy turning ideas into things people can actually use.
+          <div class="mb-5 inline-flex rounded-full border border-white/10 bg-white/5 px-4 py-2 text-[11px] uppercase tracking-[0.28em] text-zinc-300 backdrop-blur-sm" data-en="Master's Student / Researcher / Builder" data-ja="大学院生 / 研究者 / 開発者">Master's Student / Researcher / Builder</div>
+          <h1 class="text-hero font-semibold" data-en="Designing practical systems with networking and AI." data-ja="ネットワークとAIで、実用的なシステムを設計する。">Designing practical systems with networking and AI.</h1>
+          <p class="mt-6 max-w-3xl text-base leading-8 text-zinc-300 md:text-lg"
+             data-en="I build human-centered systems across networking, machine learning, embedded devices, and web interfaces. My work focuses on turning technical ideas into useful, reliable experiences."
+             data-ja="ネットワーク、機械学習、組み込み、Webインターフェースを横断しながら、人のために機能するシステムを作っています。技術的なアイデアを、実際に役立つ体験へ落とし込むことを重視しています。">
+            I build human-centered systems across networking, machine learning, embedded devices, and web interfaces. My work focuses on turning technical ideas into useful, reliable experiences.
           </p>
           <div class="mt-8 flex flex-wrap gap-3">
-            <a href="#research" class="rounded-full border border-line bg-gradient-to-b from-zinc-900 to-zinc-950 px-5 py-3 transition hover:-translate-y-0.5 hover:border-zinc-500" data-en="View Research" data-ja="研究を見る">View Research</a>
-            <a href="#links" class="rounded-full border border-line px-5 py-3 text-zinc-300 transition hover:-translate-y-0.5 hover:border-zinc-500" data-en="Open Links" data-ja="リンクを見る">Open Links</a>
+            <a href="#research" class="rounded-full border border-white/10 bg-white text-black px-5 py-3 text-sm font-medium transition hover:-translate-y-0.5 hover:bg-zinc-200" data-en="Explore Research" data-ja="研究を見る">Explore Research</a>
+            <a href="#links" class="rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm text-zinc-200 backdrop-blur-sm transition hover:-translate-y-0.5 hover:bg-white/10" data-en="Open Links" data-ja="リンクを見る">Open Links</a>
+          </div>
+          <div class="mt-10 grid gap-4 sm:grid-cols-3">
+            <div class="rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur-sm">
+              <div class="text-2xl font-semibold">01</div>
+              <div class="mt-1 text-sm text-zinc-400" data-en="Networking Research" data-ja="ネットワーク研究">Networking Research</div>
+            </div>
+            <div class="rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur-sm">
+              <div class="text-2xl font-semibold">02</div>
+              <div class="mt-1 text-sm text-zinc-400" data-en="Applied AI Projects" data-ja="AI応用プロジェクト">Applied AI Projects</div>
+            </div>
+            <div class="rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur-sm">
+              <div class="text-2xl font-semibold">03</div>
+              <div class="mt-1 text-sm text-zinc-400" data-en="System Prototyping" data-ja="システム試作">System Prototyping</div>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
-    <section id="about" class="py-8">
-      <div class="mx-auto w-[min(1040px,calc(100%-32px))]">
-        <div class="mb-4 text-xs uppercase tracking-[0.28em] text-zinc-400" data-en="About" data-ja="自己紹介">About</div>
-        <div class="rounded-[28px] border border-white/10 bg-white/[0.03] p-7 text-zinc-300 shadow-soft"
-             data-en="I am interested in computer systems, networking, machine learning, and building interfaces that connect technology with real users. This page introduces my background, research, selected achievements, and useful links."
-             data-ja="コンピュータシステム、ネットワーク、機械学習、そして技術と利用者をつなぐインターフェースに関心があります。このページでは、自己紹介、研究内容、主な成果、各種リンクをまとめています。">
-          I am interested in computer systems, networking, machine learning, and building interfaces that connect technology with real users. This page introduces my background, research, selected achievements, and useful links.
+    <section id="about" class="py-10 md:py-14">
+      <div class="mx-auto w-[min(1120px,calc(100%-32px))]">
+        <div class="mb-5 text-[11px] uppercase tracking-[0.32em] text-zinc-500" data-en="About" data-ja="自己紹介">About</div>
+        <div class="rounded-[32px] border border-white/10 bg-white/5 p-8 text-zinc-300 shadow-glow backdrop-blur-md md:p-10"
+             data-en="I am a master's student at Okayama University with interests in computer systems, networking, machine learning, and human-centered design. I enjoy combining research and implementation, especially when the result can be used in real environments."
+             data-ja="岡山大学の大学院生として、コンピュータシステム、ネットワーク、機械学習、人間中心設計に関心を持っています。研究と実装の両方を行き来しながら、実環境で役立つ形に仕上げることを大切にしています。">
+          I am a master's student at Okayama University with interests in computer systems, networking, machine learning, and human-centered design. I enjoy combining research and implementation, especially when the result can be used in real environments.
         </div>
       </div>
     </section>
 
-    <section id="research" class="py-8">
-      <div class="mx-auto w-[min(1040px,calc(100%-32px))]">
-        <div class="mb-4 text-xs uppercase tracking-[0.28em] text-zinc-400" data-en="Research" data-ja="研究">Research</div>
-        <div class="grid gap-5 md:grid-cols-2">
-          <article class="rounded-3xl border border-white/10 bg-gradient-to-b from-zinc-900 to-panel p-6">
-            <h3 class="mb-3 text-xl font-medium" data-en="Multipath TCP Fairness" data-ja="Multipath TCP の公平性">Multipath TCP Fairness</h3>
-            <p class="text-zinc-400"
-               data-en="Research on improving throughput fairness between Multipath TCP and regular TCP in heterogeneous network environments."
-               data-ja="異種ネットワーク環境において、Multipath TCP と通常の TCP の間のスループット公平性を改善する研究。">
-              Research on improving throughput fairness between Multipath TCP and regular TCP in heterogeneous network environments.
+    <section id="research" class="py-10 md:py-14">
+      <div class="mx-auto w-[min(1120px,calc(100%-32px))]">
+        <div class="mb-5 text-[11px] uppercase tracking-[0.32em] text-zinc-500" data-en="Research" data-ja="研究">Research</div>
+        <div class="grid gap-5 lg:grid-cols-2">
+          <article class="group rounded-[28px] border border-white/10 bg-white/5 p-7 shadow-glow backdrop-blur-md transition duration-300 hover:-translate-y-1 hover:border-white/20 hover:bg-white/[0.07]">
+            <div class="mb-4 text-xs uppercase tracking-[0.24em] text-zinc-500">01</div>
+            <h3 class="text-2xl font-medium tracking-tight" data-en="Multipath TCP Fairness" data-ja="Multipath TCP の公平性">Multipath TCP Fairness</h3>
+            <p class="mt-4 leading-8 text-zinc-400"
+               data-en="Research on improving throughput fairness between Multipath TCP and standard TCP under heterogeneous network conditions, with a focus on congestion control behavior and practical evaluation."
+               data-ja="異種ネットワーク条件下において、Multipath TCP と通常の TCP のスループット公平性を改善する研究です。輻輳制御の挙動と実験評価を重視しています。">
+              Research on improving throughput fairness between Multipath TCP and standard TCP under heterogeneous network conditions, with a focus on congestion control behavior and practical evaluation.
             </p>
-            <div class="mt-3 text-sm text-zinc-300" data-en="Keywords: MPTCP, congestion control, fairness, networking" data-ja="キーワード: MPTCP, 輻輳制御, 公平性, ネットワーク">
-              Keywords: MPTCP, congestion control, fairness, networking
+            <div class="mt-6 flex flex-wrap gap-2 text-xs text-zinc-300">
+              <span class="rounded-full border border-white/10 px-3 py-1">MPTCP</span>
+              <span class="rounded-full border border-white/10 px-3 py-1">Congestion Control</span>
+              <span class="rounded-full border border-white/10 px-3 py-1">Fairness</span>
             </div>
           </article>
 
-          <article class="rounded-3xl border border-white/10 bg-gradient-to-b from-zinc-900 to-panel p-6">
-            <h3 class="mb-3 text-xl font-medium" data-en="Applied AI and System Development" data-ja="AI とシステム開発">Applied AI and System Development</h3>
-            <p class="text-zinc-400"
-               data-en="Projects combining AI, embedded systems, and web technologies for practical use cases such as museums, monitoring, and user-facing tools."
-               data-ja="美術館、監視、利用者向けツールなどの実用的な用途に向けて、AI・組み込み・Web 技術を組み合わせたプロジェクト。">
-              Projects combining AI, embedded systems, and web technologies for practical use cases such as museums, monitoring, and user-facing tools.
+          <article class="group rounded-[28px] border border-white/10 bg-white/5 p-7 shadow-glow backdrop-blur-md transition duration-300 hover:-translate-y-1 hover:border-white/20 hover:bg-white/[0.07]">
+            <div class="mb-4 text-xs uppercase tracking-[0.24em] text-zinc-500">02</div>
+            <h3 class="text-2xl font-medium tracking-tight" data-en="Applied AI and Human-Centered Systems" data-ja="AI と人間中心システム">Applied AI and Human-Centered Systems</h3>
+            <p class="mt-4 leading-8 text-zinc-400"
+               data-en="Projects that combine AI, embedded devices, and web systems for practical environments such as museums, surveys, assistive experiences, and on-site operation support."
+               data-ja="AI、組み込み機器、Webシステムを組み合わせ、美術館、アンケート、支援体験、現場運用支援などの実環境へ応用するプロジェクトです。">
+              Projects that combine AI, embedded devices, and web systems for practical environments such as museums, surveys, assistive experiences, and on-site operation support.
             </p>
-            <div class="mt-3 text-sm text-zinc-300" data-en="Keywords: AI, Raspberry Pi, web app, human-centered design" data-ja="キーワード: AI, Raspberry Pi, Webアプリ, 人間中心設計">
-              Keywords: AI, Raspberry Pi, web app, human-centered design
+            <div class="mt-6 flex flex-wrap gap-2 text-xs text-zinc-300">
+              <span class="rounded-full border border-white/10 px-3 py-1">AI</span>
+              <span class="rounded-full border border-white/10 px-3 py-1">Embedded</span>
+              <span class="rounded-full border border-white/10 px-3 py-1">Web Systems</span>
             </div>
           </article>
         </div>
       </div>
     </section>
 
-    <section id="achievements" class="py-8">
-      <div class="mx-auto w-[min(1040px,calc(100%-32px))]">
-        <div class="mb-4 text-xs uppercase tracking-[0.28em] text-zinc-400" data-en="Achievements" data-ja="成果">Achievements</div>
-        <div class="grid gap-5 md:grid-cols-2">
-          <article class="rounded-3xl border border-white/10 bg-gradient-to-b from-zinc-900 to-panel p-6">
-            <h3 class="mb-3 text-xl font-medium" data-en="Selected Project 01" data-ja="主なプロジェクト 01">Selected Project 01</h3>
-            <p class="text-zinc-400"
-               data-en="Write a short summary of a project, paper, award, or presentation here. Keep it concise and impactful."
-               data-ja="ここにプロジェクト、論文、受賞、発表などの要約を書きます。短く、伝わりやすくまとめるのがおすすめです。">
-              Write a short summary of a project, paper, award, or presentation here. Keep it concise and impactful.
+    <section id="achievements" class="py-10 md:py-14">
+      <div class="mx-auto w-[min(1120px,calc(100%-32px))]">
+        <div class="mb-5 text-[11px] uppercase tracking-[0.32em] text-zinc-500" data-en="Achievements" data-ja="成果">Achievements</div>
+        <div class="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+          <article class="rounded-[28px] border border-white/10 bg-white/5 p-7 backdrop-blur-md transition hover:bg-white/[0.07]">
+            <div class="text-sm text-zinc-500">Project</div>
+            <h3 class="mt-2 text-xl font-medium" data-en="Museum DX Project" data-ja="美術館DXプロジェクト">Museum DX Project</h3>
+            <p class="mt-3 leading-7 text-zinc-400"
+               data-en="Development of accessible digital experiences and support systems for museum visitors."
+               data-ja="美術館来館者のためのアクセシブルなデジタル体験と支援システムの開発。">
+              Development of accessible digital experiences and support systems for museum visitors.
             </p>
           </article>
 
-          <article class="rounded-3xl border border-white/10 bg-gradient-to-b from-zinc-900 to-panel p-6">
-            <h3 class="mb-3 text-xl font-medium" data-en="Selected Project 02" data-ja="主なプロジェクト 02">Selected Project 02</h3>
-            <p class="text-zinc-400"
-               data-en="You can also add publication titles, conference names, GitHub repositories, or demonstration systems."
-               data-ja="論文タイトル、学会名、GitHub リポジトリ、デモシステムなどを書いてもよいです。">
-              You can also add publication titles, conference names, GitHub repositories, or demonstration systems.
+          <article class="rounded-[28px] border border-white/10 bg-white/5 p-7 backdrop-blur-md transition hover:bg-white/[0.07]">
+            <div class="text-sm text-zinc-500">Research</div>
+            <h3 class="mt-2 text-xl font-medium" data-en="Network Experimentation" data-ja="ネットワーク実験">Network Experimentation</h3>
+            <p class="mt-3 leading-7 text-zinc-400"
+               data-en="Evaluation of protocol behavior under varying RTT, queue, and multi-flow conditions."
+               data-ja="RTT、キュー、マルチフロー条件を変化させた際のプロトコル挙動の評価。">
+              Evaluation of protocol behavior under varying RTT, queue, and multi-flow conditions.
+            </p>
+          </article>
+
+          <article class="rounded-[28px] border border-white/10 bg-white/5 p-7 backdrop-blur-md transition hover:bg-white/[0.07] md:col-span-2 xl:col-span-1">
+            <div class="text-sm text-zinc-500">System</div>
+            <h3 class="mt-2 text-xl font-medium" data-en="Prototype Development" data-ja="プロトタイプ開発">Prototype Development</h3>
+            <p class="mt-3 leading-7 text-zinc-400"
+               data-en="Building end-to-end prototypes with Raspberry Pi, AI models, and modern web interfaces."
+               data-ja="Raspberry Pi、AIモデル、モダンなWeb UIを用いたエンドツーエンドの試作開発。">
+              Building end-to-end prototypes with Raspberry Pi, AI models, and modern web interfaces.
             </p>
           </article>
         </div>
       </div>
     </section>
 
-    <section id="links" class="py-8">
-      <div class="mx-auto w-[min(1040px,calc(100%-32px))]">
-        <div class="mb-4 text-xs uppercase tracking-[0.28em] text-zinc-400" data-en="Links" data-ja="リンク集">Links</div>
-        <div class="grid gap-4 md:grid-cols-3">
-          <a href="https://github.com/yourname" target="_blank" rel="noreferrer" class="block min-h-[145px] rounded-3xl border border-white/10 bg-gradient-to-b from-zinc-900 to-zinc-950 p-6 transition hover:-translate-y-0.5 hover:border-zinc-500">
-            <div class="mb-2 text-lg font-medium">GitHub</div>
-            <div class="text-sm text-zinc-400" data-en="Source code, projects, and experiments." data-ja="ソースコード、制作物、実験記録。">Source code, projects, and experiments.</div>
+    <section id="links" class="py-10 md:py-14">
+      <div class="mx-auto w-[min(1120px,calc(100%-32px))]">
+        <div class="mb-5 text-[11px] uppercase tracking-[0.32em] text-zinc-500" data-en="Links" data-ja="リンク集">Links</div>
+        <div class="grid gap-5 md:grid-cols-3">
+          <a href="https://github.com/yourname" target="_blank" rel="noreferrer" class="group rounded-[28px] border border-white/10 bg-white/5 p-7 backdrop-blur-md transition duration-300 hover:-translate-y-1 hover:border-white/20 hover:bg-white/[0.08]">
+            <div class="text-sm text-zinc-500">01</div>
+            <div class="mt-3 text-2xl font-medium">GitHub</div>
+            <div class="mt-3 leading-7 text-zinc-400" data-en="Source code, experiments, and project repositories." data-ja="ソースコード、実験、プロジェクトのリポジトリ。">Source code, experiments, and project repositories.</div>
           </a>
 
-          <a href="https://www.linkedin.com/in/yourname" target="_blank" rel="noreferrer" class="block min-h-[145px] rounded-3xl border border-white/10 bg-gradient-to-b from-zinc-900 to-zinc-950 p-6 transition hover:-translate-y-0.5 hover:border-zinc-500">
-            <div class="mb-2 text-lg font-medium">LinkedIn</div>
-            <div class="text-sm text-zinc-400" data-en="Career profile and professional background." data-ja="経歴やプロフィール。">Career profile and professional background.</div>
+          <a href="https://www.linkedin.com/in/yourname" target="_blank" rel="noreferrer" class="group rounded-[28px] border border-white/10 bg-white/5 p-7 backdrop-blur-md transition duration-300 hover:-translate-y-1 hover:border-white/20 hover:bg-white/[0.08]">
+            <div class="text-sm text-zinc-500">02</div>
+            <div class="mt-3 text-2xl font-medium">LinkedIn</div>
+            <div class="mt-3 leading-7 text-zinc-400" data-en="Professional background, interests, and activities." data-ja="経歴、関心分野、活動内容。">Professional background, interests, and activities.</div>
           </a>
 
-          <a href="https://example.com" target="_blank" rel="noreferrer" class="block min-h-[145px] rounded-3xl border border-white/10 bg-gradient-to-b from-zinc-900 to-zinc-950 p-6 transition hover:-translate-y-0.5 hover:border-zinc-500">
-            <div class="mb-2 text-lg font-medium" data-en="Other Link" data-ja="その他リンク">Other Link</div>
-            <div class="text-sm text-zinc-400" data-en="Lab page, blog, publication list, or personal notes." data-ja="研究室ページ、ブログ、業績一覧、メモなど。">Lab page, blog, publication list, or personal notes.</div>
+          <a href="https://example.com" target="_blank" rel="noreferrer" class="group rounded-[28px] border border-white/10 bg-white/5 p-7 backdrop-blur-md transition duration-300 hover:-translate-y-1 hover:border-white/20 hover:bg-white/[0.08]">
+            <div class="text-sm text-zinc-500">03</div>
+            <div class="mt-3 text-2xl font-medium" data-en="Other Link" data-ja="その他リンク">Other Link</div>
+            <div class="mt-3 leading-7 text-zinc-400" data-en="Lab page, publications, blog, or related resources." data-ja="研究室ページ、業績、ブログ、関連資料。">Lab page, publications, blog, or related resources.</div>
           </a>
         </div>
       </div>
     </section>
   </main>
 
-  <footer class="px-4 py-12 text-sm text-zinc-500">
-    <div class="mx-auto w-[min(1040px,calc(100%-32px))]" data-en="© 2026 Yuto Niki. All rights reserved." data-ja="© 2026 仁木 優斗">© 2026 Yuto Niki. All rights reserved.</div>
+  <footer class="px-4 py-12 text-sm text-zinc-500 md:py-16">
+    <div class="mx-auto flex w-[min(1120px,calc(100%-32px))] flex-col gap-3 border-t border-white/10 pt-8 md:flex-row md:items-center md:justify-between">
+      <div data-en="© 2026 Yuto Niki. All rights reserved." data-ja="© 2026 仁木 優斗">© 2026 Yuto Niki. All rights reserved.</div>
+      <div class="text-zinc-600" data-en="Built with GitHub Pages and Tailwind CSS." data-ja="GitHub Pages と Tailwind CSS で構築。">Built with GitHub Pages and Tailwind CSS.</div>
+    </div>
   </footer>
 
   <script>
@@ -175,6 +364,19 @@
     });
 
     applyLanguage('en');
+
+    const backgroundHero = document.getElementById('backgroundHero');
+    const updateHeroFade = () => {
+      if (!backgroundHero) return;
+      const fadeStart = 0;
+      const fadeEnd = 420;
+      const progress = Math.min(Math.max((window.scrollY - fadeStart) / (fadeEnd - fadeStart), 0), 1);
+      backgroundHero.style.opacity = String(1 - progress);
+    };
+
+    window.addEventListener('scroll', updateHeroFade, { passive: true });
+    updateHeroFade();
   </script>
 </body>
 </html>
+
