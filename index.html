@@ -1,400 +1,180 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>YUTO'S ROOM - Portfolio</title>
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      background: #008080;
-      color: #000;
-      font-family: "MS PGothic", "MS UI Gothic", "Verdana", sans-serif;
-      font-size: 16px;
-      line-height: 1.5;
-      background-image:
-        linear-gradient(45deg, rgba(255,255,255,0.06) 25%, transparent 25%),
-        linear-gradient(-45deg, rgba(255,255,255,0.06) 25%, transparent 25%),
-        linear-gradient(45deg, transparent 75%, rgba(0,0,0,0.05) 75%),
-        linear-gradient(-45deg, transparent 75%, rgba(0,0,0,0.05) 75%);
-      background-size: 24px 24px;
-      background-position: 0 0, 0 12px, 12px -12px, -12px 0px;
-    }
-
-    a {
-      color: #0000ee;
-    }
-
-    .page {
-      width: min(960px, calc(100% - 24px));
-      margin: 16px auto 40px;
-      background: #c0c0c0;
-      border: 3px solid #fff;
-      border-right-color: #404040;
-      border-bottom-color: #404040;
-      box-shadow: 8px 8px 0 rgba(0,0,0,0.25);
-    }
-
-    .titlebar {
-      background: linear-gradient(90deg, #000080, #1084d0);
-      color: #fff;
-      padding: 8px 10px;
-      font-weight: bold;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      letter-spacing: 0.5px;
-    }
-
-    .window-buttons {
-      display: flex;
-      gap: 6px;
-    }
-
-    .btn {
-      width: 16px;
-      height: 16px;
-      background: #c0c0c0;
-      border: 2px solid #fff;
-      border-right-color: #404040;
-      border-bottom-color: #404040;
-    }
-
-    .inner {
-      padding: 10px;
-    }
-
-    .banner {
-      background: #000;
-      color: #00ff00;
-      border: 2px inset #999;
-      padding: 10px;
-      text-align: center;
-      margin-bottom: 12px;
-    }
-
-    .banner h1 {
-      margin: 6px 0;
-      font-size: 34px;
-      color: #ffff00;
-      text-shadow: 2px 2px 0 #ff00ff;
-    }
-
-    .marquee {
-      background: #fffacd;
-      border: 2px dashed #f00;
-      color: #c00;
-      padding: 6px 10px;
-      margin: 10px 0 14px;
-      font-weight: bold;
-      overflow: hidden;
-      white-space: nowrap;
-      box-sizing: border-box;
-    }
-
-    .marquee span {
-      display: inline-block;
-      padding-left: 100%;
-      animation: scroll 14s linear infinite;
-    }
-
-    @keyframes scroll {
-      0% { transform: translateX(0); }
-      100% { transform: translateX(-100%); }
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: 220px 1fr;
-      gap: 12px;
-    }
-
-    .panel {
-      background: #e5e5e5;
-      border: 2px solid #fff;
-      border-right-color: #6a6a6a;
-      border-bottom-color: #6a6a6a;
-      padding: 10px;
-      margin-bottom: 12px;
-    }
-
-    .panel h2 {
-      margin: 0 0 8px;
-      font-size: 20px;
-      background: #000080;
-      color: #fff;
-      padding: 4px 6px;
-    }
-
-    .profile-box {
-      text-align: center;
-    }
-
-    .avatar {
-      width: 120px;
-      height: 120px;
-      margin: 8px auto;
-      background: repeating-linear-gradient(
-        45deg,
-        #ffd700,
-        #ffd700 10px,
-        #ff69b4 10px,
-        #ff69b4 20px
-      );
-      border: 3px solid #000;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: bold;
-    }
-
-    .counter {
-      display: inline-block;
-      background: #000;
-      color: #00ff00;
-      padding: 4px 8px;
-      font-family: monospace;
-      font-size: 18px;
-      letter-spacing: 2px;
-      border: 2px inset #666;
-    }
-
-    ul {
-      padding-left: 20px;
-      margin: 8px 0;
-    }
-
-    .works {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 10px;
-    }
-
-    .work-card {
-      background: #fff;
-      border: 2px groove #999;
-      padding: 10px;
-    }
-
-    .work-thumb {
-      height: 110px;
-      background:
-        linear-gradient(135deg, #39f, #9ff 45%, #fff 45%, #fff 55%, #f9f 55%, #f39);
-      border: 2px solid #000;
-      margin-bottom: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: bold;
-      color: #000;
-    }
-
-    .blink {
-      animation: blink 1s steps(2, start) infinite;
-      color: #f00;
-      font-weight: bold;
-    }
-
-    @keyframes blink {
-      to { visibility: hidden; }
-    }
-
-    .badges {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 8px;
-    }
-
-    .badge {
-      background: linear-gradient(#fff799, #ffcc00);
-      border: 2px outset #d4aa00;
-      padding: 4px 8px;
-      font-size: 14px;
-      font-weight: bold;
-    }
-
-    .guestbook {
-      background: #fffef0;
-      border: 2px dotted #333;
-      padding: 10px;
-      font-size: 14px;
-    }
-
-    .footer {
-      text-align: center;
-      padding: 16px 10px 22px;
-      font-size: 14px;
-    }
-
-    .footer img {
-      vertical-align: middle;
-    }
-
-    .link-list a {
-      display: block;
-      margin-bottom: 6px;
-      font-weight: bold;
-    }
-
-    .small {
-      font-size: 13px;
-    }
-
-    @media (max-width: 760px) {
-      .grid {
-        grid-template-columns: 1fr;
-      }
-
-      .works {
-        grid-template-columns: 1fr;
-      }
-
-      .banner h1 {
-        font-size: 26px;
+  <title>Yuto Niki | Portfolio</title>
+  <meta name="description" content="Personal portfolio website with profile, research, achievements, and links." />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            base: '#0a0a0a',
+            panel: '#121212',
+            soft: '#1a1a1a',
+            line: '#2a2a2a'
+          },
+          boxShadow: {
+            soft: '0 20px 60px rgba(0,0,0,0.35)'
+          }
+        }
       }
     }
-  </style>
+  </script>
 </head>
-<body>
-  <div class="page">
-    <div class="titlebar">
-      <div>YUTO'S ROOM ver.2001</div>
-      <div class="window-buttons">
-        <div class="btn"></div>
-        <div class="btn"></div>
-        <div class="btn"></div>
-      </div>
+<body class="bg-base text-zinc-100 antialiased bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.06),transparent_32%),linear-gradient(180deg,#070707_0%,#0d0d0d_100%)]">
+  <header class="sticky top-0 z-50 border-b border-white/10 bg-black/60 backdrop-blur">
+    <div class="mx-auto flex w-[min(1040px,calc(100%-32px))] flex-col gap-4 py-4 md:flex-row md:items-center md:justify-between">
+      <div class="text-sm uppercase tracking-[0.25em] text-zinc-400">Portfolio</div>
+      <nav class="flex flex-wrap items-center gap-4 text-sm text-zinc-300">
+        <a href="#about" data-en="About" data-ja="自己紹介">About</a>
+        <a href="#research" data-en="Research" data-ja="研究">Research</a>
+        <a href="#achievements" data-en="Achievements" data-ja="成果">Achievements</a>
+        <a href="#links" data-en="Links" data-ja="リンク集">Links</a>
+        <button id="langToggle" class="rounded-full border border-line bg-zinc-950 px-4 py-2 transition hover:-translate-y-0.5 hover:border-zinc-500">日本語</button>
+      </nav>
     </div>
+  </header>
 
-    <div class="inner">
-      <div class="banner">
-        <div>★★★ WELCOME TO MY HOMEPAGE ★★★</div>
-        <h1>YUTO'S PORTFOLIO</h1>
-        <div>このページはインターネット黎明期の個人サイト風に構成されています</div>
+  <main>
+    <section class="flex min-h-[88vh] items-center py-12">
+      <div class="mx-auto grid w-[min(1040px,calc(100%-32px))] gap-12 md:grid-cols-[280px_1fr] md:items-center">
+        <div class="flex justify-center">
+          <div class="h-60 w-60 overflow-hidden rounded-full border border-white/15 bg-soft shadow-soft">
+            <img src="images/profile.jpg" alt="Profile photo" class="h-full w-full object-cover" />
+          </div>
+        </div>
+
+        <div>
+          <div class="mb-4 text-xs uppercase tracking-[0.28em] text-zinc-400" data-en="Personal Website" data-ja="個人サイト">Personal Website</div>
+          <h1 class="mb-5 text-5xl font-semibold tracking-tight md:text-7xl" data-en="Yuto Niki" data-ja="仁木 優斗">Yuto Niki</h1>
+          <p class="max-w-3xl text-base leading-8 text-zinc-300 md:text-lg"
+             data-en="Master's student, researcher, and builder. I work on networking, AI, and practical systems, and I enjoy turning ideas into things people can actually use."
+             data-ja="大学院生・研究者・開発者。ネットワーク、AI、実用システムを中心に、アイデアを実際に使える形へ落とし込むことが好きです。">
+            Master's student, researcher, and builder. I work on networking, AI, and practical systems, and I enjoy turning ideas into things people can actually use.
+          </p>
+          <div class="mt-8 flex flex-wrap gap-3">
+            <a href="#research" class="rounded-full border border-line bg-gradient-to-b from-zinc-900 to-zinc-950 px-5 py-3 transition hover:-translate-y-0.5 hover:border-zinc-500" data-en="View Research" data-ja="研究を見る">View Research</a>
+            <a href="#links" class="rounded-full border border-line px-5 py-3 text-zinc-300 transition hover:-translate-y-0.5 hover:border-zinc-500" data-en="Open Links" data-ja="リンクを見る">Open Links</a>
+          </div>
+        </div>
       </div>
+    </section>
 
-      <div class="marquee"><span>祝・初来訪ありがとうございます！ 工事中のページも含めて、ゆっくり見ていってください！ ★ 相互リンク募集中 ★</span></div>
+    <section id="about" class="py-8">
+      <div class="mx-auto w-[min(1040px,calc(100%-32px))]">
+        <div class="mb-4 text-xs uppercase tracking-[0.28em] text-zinc-400" data-en="About" data-ja="自己紹介">About</div>
+        <div class="rounded-[28px] border border-white/10 bg-white/[0.03] p-7 text-zinc-300 shadow-soft"
+             data-en="I am interested in computer systems, networking, machine learning, and building interfaces that connect technology with real users. This page introduces my background, research, selected achievements, and useful links."
+             data-ja="コンピュータシステム、ネットワーク、機械学習、そして技術と利用者をつなぐインターフェースに関心があります。このページでは、自己紹介、研究内容、主な成果、各種リンクをまとめています。">
+          I am interested in computer systems, networking, machine learning, and building interfaces that connect technology with real users. This page introduces my background, research, selected achievements, and useful links.
+        </div>
+      </div>
+    </section>
 
-      <div class="grid">
-        <aside>
-          <div class="panel profile-box">
-            <h2>PROFILE</h2>
-            <div class="avatar">YOUR<br />PHOTO</div>
-            <strong>仁木優斗 / Yuto Niki</strong><br />
-            岡山大学 / Engineer / Creator
-            <div style="margin: 12px 0 8px;">訪問者数</div>
-            <div class="counter">000123</div>
-            <div class="small" style="margin-top: 10px;">最終更新: 2026/04/19</div>
-          </div>
-
-          <div class="panel">
-            <h2>MENU</h2>
-            <div class="link-list">
-              <a href="#about">▶ ABOUT ME</a>
-              <a href="#works">▶ WORKS</a>
-              <a href="#skills">▶ SKILLS</a>
-              <a href="#links">▶ LINKS</a>
-              <a href="#guestbook">▶ GUESTBOOK</a>
-            </div>
-          </div>
-
-          <div class="panel">
-            <h2>STATUS</h2>
-            <div><span class="blink">● ONLINE</span></div>
-            <div class="small" style="margin-top: 8px;">気ままに制作中。</div>
-            <div class="badges">
-              <div class="badge">HTML</div>
-              <div class="badge">CSS</div>
-              <div class="badge">Linux</div>
-              <div class="badge">AI</div>
-            </div>
-          </div>
-        </aside>
-
-        <main>
-          <section class="panel" id="about">
-            <h2>ABOUT ME</h2>
-            <p>
-              こんにちは。個人制作や研究、開発の記録をまとめるためのポートフォリオサイトです。<br />
-              このページは、昔の個人ホームページの雰囲気を残しつつ、今見ても読めるように整理しています。
+    <section id="research" class="py-8">
+      <div class="mx-auto w-[min(1040px,calc(100%-32px))]">
+        <div class="mb-4 text-xs uppercase tracking-[0.28em] text-zinc-400" data-en="Research" data-ja="研究">Research</div>
+        <div class="grid gap-5 md:grid-cols-2">
+          <article class="rounded-3xl border border-white/10 bg-gradient-to-b from-zinc-900 to-panel p-6">
+            <h3 class="mb-3 text-xl font-medium" data-en="Multipath TCP Fairness" data-ja="Multipath TCP の公平性">Multipath TCP Fairness</h3>
+            <p class="text-zinc-400"
+               data-en="Research on improving throughput fairness between Multipath TCP and regular TCP in heterogeneous network environments."
+               data-ja="異種ネットワーク環境において、Multipath TCP と通常の TCP の間のスループット公平性を改善する研究。">
+              Research on improving throughput fairness between Multipath TCP and regular TCP in heterogeneous network environments.
             </p>
-            <ul>
-              <li>研究テーマ: ネットワーク / MPTCP / システム構築</li>
-              <li>興味: Web、Linux、AI、ものづくり</li>
-              <li>好きなサイト文化: キリ番、工事中GIF、相互リンク</li>
-            </ul>
-          </section>
-
-          <section class="panel" id="works">
-            <h2>WORKS</h2>
-            <div class="works">
-              <div class="work-card">
-                <div class="work-thumb">PROJECT 01</div>
-                <strong>作品タイトル 1</strong>
-                <p class="small">ここに作品の説明を書きます。Webアプリ、研究、制作物など。</p>
-                <a href="#">詳細を見る</a>
-              </div>
-              <div class="work-card">
-                <div class="work-thumb">PROJECT 02</div>
-                <strong>作品タイトル 2</strong>
-                <p class="small">ビジュアル重視でも、テキスト主体でもそれっぽくまとまります。</p>
-                <a href="#">詳細を見る</a>
-              </div>
-              <div class="work-card">
-                <div class="work-thumb">PROJECT 03</div>
-                <strong>作品タイトル 3</strong>
-                <p class="small">スクリーンショット、概要、使用技術などを並べる想定です。</p>
-                <a href="#">詳細を見る</a>
-              </div>
-              <div class="work-card">
-                <div class="work-thumb">COMING SOON</div>
-                <strong>工事中...</strong>
-                <p class="small">昔の個人サイト感を出すため、あえて工事中枠も残しています。</p>
-                <a href="#">準備中</a>
-              </div>
+            <div class="mt-3 text-sm text-zinc-300" data-en="Keywords: MPTCP, congestion control, fairness, networking" data-ja="キーワード: MPTCP, 輻輳制御, 公平性, ネットワーク">
+              Keywords: MPTCP, congestion control, fairness, networking
             </div>
-          </section>
+          </article>
 
-          <section class="panel" id="skills">
-            <h2>SKILLS</h2>
-            <ul>
-              <li>HTML / CSS / JavaScript</li>
-              <li>Python / Linux / サーバー構築</li>
-              <li>機械学習 / 画像処理 / データ分析</li>
-              <li>研究・開発・プロトタイピング</li>
-            </ul>
-          </section>
-
-          <section class="panel" id="links">
-            <h2>LINKS</h2>
-            <ul>
-              <li><a href="#">GitHub</a></li>
-              <li><a href="#">X / Twitter</a></li>
-              <li><a href="#">Blog</a></li>
-              <li><a href="#">Contact</a></li>
-            </ul>
-          </section>
-
-          <section class="panel" id="guestbook">
-            <h2>GUESTBOOK</h2>
-            <div class="guestbook">
-              <p><strong>name:</strong> visitor01</p>
-              <p><strong>message:</strong> レトロな雰囲気が最高でした！また来ます！</p>
-              <hr />
-              <p><strong>name:</strong> webmaster</p>
-              <p><strong>message:</strong> 書き込みありがとうございます。更新がんばります！</p>
+          <article class="rounded-3xl border border-white/10 bg-gradient-to-b from-zinc-900 to-panel p-6">
+            <h3 class="mb-3 text-xl font-medium" data-en="Applied AI and System Development" data-ja="AI とシステム開発">Applied AI and System Development</h3>
+            <p class="text-zinc-400"
+               data-en="Projects combining AI, embedded systems, and web technologies for practical use cases such as museums, monitoring, and user-facing tools."
+               data-ja="美術館、監視、利用者向けツールなどの実用的な用途に向けて、AI・組み込み・Web 技術を組み合わせたプロジェクト。">
+              Projects combining AI, embedded systems, and web technologies for practical use cases such as museums, monitoring, and user-facing tools.
+            </p>
+            <div class="mt-3 text-sm text-zinc-300" data-en="Keywords: AI, Raspberry Pi, web app, human-centered design" data-ja="キーワード: AI, Raspberry Pi, Webアプリ, 人間中心設計">
+              Keywords: AI, Raspberry Pi, web app, human-centered design
             </div>
-          </section>
-        </main>
+          </article>
+        </div>
       </div>
+    </section>
 
-      <div class="footer">
-        <div>このページは 800x600 / Internet Explorer 風味で最適化（気分）されています</div>
-        <div style="margin-top: 8px;">&copy; 2026 Yuto Niki. All Rights Reserved.</div>
+    <section id="achievements" class="py-8">
+      <div class="mx-auto w-[min(1040px,calc(100%-32px))]">
+        <div class="mb-4 text-xs uppercase tracking-[0.28em] text-zinc-400" data-en="Achievements" data-ja="成果">Achievements</div>
+        <div class="grid gap-5 md:grid-cols-2">
+          <article class="rounded-3xl border border-white/10 bg-gradient-to-b from-zinc-900 to-panel p-6">
+            <h3 class="mb-3 text-xl font-medium" data-en="Selected Project 01" data-ja="主なプロジェクト 01">Selected Project 01</h3>
+            <p class="text-zinc-400"
+               data-en="Write a short summary of a project, paper, award, or presentation here. Keep it concise and impactful."
+               data-ja="ここにプロジェクト、論文、受賞、発表などの要約を書きます。短く、伝わりやすくまとめるのがおすすめです。">
+              Write a short summary of a project, paper, award, or presentation here. Keep it concise and impactful.
+            </p>
+          </article>
+
+          <article class="rounded-3xl border border-white/10 bg-gradient-to-b from-zinc-900 to-panel p-6">
+            <h3 class="mb-3 text-xl font-medium" data-en="Selected Project 02" data-ja="主なプロジェクト 02">Selected Project 02</h3>
+            <p class="text-zinc-400"
+               data-en="You can also add publication titles, conference names, GitHub repositories, or demonstration systems."
+               data-ja="論文タイトル、学会名、GitHub リポジトリ、デモシステムなどを書いてもよいです。">
+              You can also add publication titles, conference names, GitHub repositories, or demonstration systems.
+            </p>
+          </article>
+        </div>
       </div>
-    </div>
-  </div>
+    </section>
+
+    <section id="links" class="py-8">
+      <div class="mx-auto w-[min(1040px,calc(100%-32px))]">
+        <div class="mb-4 text-xs uppercase tracking-[0.28em] text-zinc-400" data-en="Links" data-ja="リンク集">Links</div>
+        <div class="grid gap-4 md:grid-cols-3">
+          <a href="https://github.com/yourname" target="_blank" rel="noreferrer" class="block min-h-[145px] rounded-3xl border border-white/10 bg-gradient-to-b from-zinc-900 to-zinc-950 p-6 transition hover:-translate-y-0.5 hover:border-zinc-500">
+            <div class="mb-2 text-lg font-medium">GitHub</div>
+            <div class="text-sm text-zinc-400" data-en="Source code, projects, and experiments." data-ja="ソースコード、制作物、実験記録。">Source code, projects, and experiments.</div>
+          </a>
+
+          <a href="https://www.linkedin.com/in/yourname" target="_blank" rel="noreferrer" class="block min-h-[145px] rounded-3xl border border-white/10 bg-gradient-to-b from-zinc-900 to-zinc-950 p-6 transition hover:-translate-y-0.5 hover:border-zinc-500">
+            <div class="mb-2 text-lg font-medium">LinkedIn</div>
+            <div class="text-sm text-zinc-400" data-en="Career profile and professional background." data-ja="経歴やプロフィール。">Career profile and professional background.</div>
+          </a>
+
+          <a href="https://example.com" target="_blank" rel="noreferrer" class="block min-h-[145px] rounded-3xl border border-white/10 bg-gradient-to-b from-zinc-900 to-zinc-950 p-6 transition hover:-translate-y-0.5 hover:border-zinc-500">
+            <div class="mb-2 text-lg font-medium" data-en="Other Link" data-ja="その他リンク">Other Link</div>
+            <div class="text-sm text-zinc-400" data-en="Lab page, blog, publication list, or personal notes." data-ja="研究室ページ、ブログ、業績一覧、メモなど。">Lab page, blog, publication list, or personal notes.</div>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="px-4 py-12 text-sm text-zinc-500">
+    <div class="mx-auto w-[min(1040px,calc(100%-32px))]" data-en="© 2026 Yuto Niki. All rights reserved." data-ja="© 2026 仁木 優斗">© 2026 Yuto Niki. All rights reserved.</div>
+  </footer>
+
+  <script>
+    const toggleButton = document.getElementById('langToggle');
+    let currentLang = 'en';
+
+    function applyLanguage(lang) {
+      document.documentElement.lang = lang;
+      document.querySelectorAll('[data-en]').forEach((el) => {
+        el.textContent = el.dataset[lang];
+      });
+      toggleButton.textContent = lang === 'en' ? '日本語' : 'English';
+      currentLang = lang;
+    }
+
+    toggleButton.addEventListener('click', () => {
+      applyLanguage(currentLang === 'en' ? 'ja' : 'en');
+    });
+
+    applyLanguage('en');
+  </script>
 </body>
 </html>
