@@ -49,7 +49,6 @@
   .hero-glow-a { animation: floatGlowA 9s ease-in-out infinite; }
   .hero-glow-b { animation: floatGlowB 12s ease-in-out infinite; }
   .network-layer { animation: networkDrift 8s ease-in-out infinite; }
-
   .earth-rotator {
     position: absolute;
     inset: 0;
@@ -57,10 +56,7 @@
     transform-origin: center;
   }
 
-  .net-node {
-    animation: pulseNode 3.6s ease-in-out infinite;
-  }
-
+  .net-node { animation: pulseNode 3.6s ease-in-out infinite; }
   .net-node.delay-1 { animation-delay: 0.8s; }
   .net-node.delay-2 { animation-delay: 1.6s; }
   .net-node.delay-3 { animation-delay: 2.4s; }
@@ -95,6 +91,15 @@
       transition: none !important;
     }
   }
+  .menu-open .menu-line:nth-child(1) {
+    transform: translateY(0) rotate(45deg);
+  }
+  .menu-open .menu-line:nth-child(2) {
+    opacity: 0;
+  }
+  .menu-open .menu-line:nth-child(3) {
+    transform: translateY(0) rotate(-45deg);
+  }
 </style>
 <script>
     tailwind.config = {
@@ -120,61 +125,27 @@
       }
     }
   </script>
+  <script src="./background.js" defer></script>
 </head>
 <body class="min-h-screen bg-base text-zinc-100 antialiased selection:bg-white/20 selection:text-white">
-  <div id="backgroundHero" class="background-hero fixed inset-0 -z-10 overflow-hidden">
-    <div class="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.10),transparent_28%),linear-gradient(180deg,#040404_0%,#090909_42%,#050505_100%)]"></div>
-    <div class="hero-glow-a absolute left-1/2 top-[-10rem] h-[28rem] w-[28rem] -translate-x-1/2 rounded-full bg-white/5 blur-3xl"></div>
-    <div class="hero-glow-b absolute bottom-[-8rem] right-[-6rem] h-[22rem] w-[22rem] rounded-full bg-white/[0.04] blur-3xl"></div>
+  <div id="backgroundHero" class="background-hero fixed inset-0 -z-10 overflow-hidden"></div>
 
-    <div class="pointer-events-none absolute inset-x-0 top-0 flex h-[34rem] items-start justify-center overflow-hidden">
-      <div class="relative mt-6 h-[360px] w-[360px] md:h-[420px] md:w-[420px] opacity-90 network-layer">
-        <div class="absolute inset-0 rounded-full bg-[radial-gradient(circle_at_30%_30%,rgba(255,255,255,0.12),transparent_60%),radial-gradient(circle_at_70%_70%,rgba(255,255,255,0.08),transparent_70%)] blur-xl"></div>
-        <div class="earth-rotator">
-          <div class="absolute inset-0 rounded-full border border-white/10"></div>
-
-          <div class="absolute inset-0 flex items-center justify-center">
-            <div class="h-[80%] w-full rounded-full border border-white/10"></div>
+  <header id="siteHeader" class="fixed inset-x-0 top-0 z-50 border-b border-white/8 bg-black/40 backdrop-blur-xl transition-transform duration-300">
+    <div class="mx-auto flex w-[min(1120px,calc(100%-24px))] md:w-[min(1120px,calc(100%-32px))] items-center justify-between py-4">
+      <div class="flex items-center gap-3">
+        <button id="menuToggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu" class="flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/5 text-zinc-200 md:hidden">
+          <span class="sr-only">Menu</span>
+          <div class="relative h-5 w-5">
+            <span class="menu-line absolute left-0 top-1/2 h-[2px] w-full -translate-y-2 bg-current transition-all duration-300"></span>
+            <span class="menu-line absolute left-0 top-1/2 h-[2px] w-full bg-current transition-all duration-300"></span>
+            <span class="menu-line absolute left-0 top-1/2 h-[2px] w-full translate-y-2 bg-current transition-all duration-300"></span>
           </div>
-          <div class="absolute inset-0 flex items-center justify-center">
-            <div class="h-[60%] w-full rounded-full border border-white/10"></div>
-          </div>
-          <div class="absolute inset-0 flex items-center justify-center">
-            <div class="h-full w-[80%] rounded-full border border-white/10"></div>
-          </div>
-          <div class="absolute inset-0 flex items-center justify-center">
-            <div class="h-full w-[60%] rounded-full border border-white/10"></div>
-          </div>
+        </button>
 
-          <svg viewBox="0 0 420 420" class="absolute inset-0 h-full w-full" fill="none">
-            <circle cx="210" cy="210" r="160" stroke="rgba(255,255,255,0.15)" stroke-width="1" />
-            <ellipse cx="210" cy="210" rx="170" ry="80" stroke="rgba(255,255,255,0.12)" stroke-width="1" />
-            <ellipse cx="210" cy="210" rx="80" ry="170" stroke="rgba(255,255,255,0.12)" stroke-width="1" />
-          </svg>
-
-          <div class="packet" style="offset-path: path('M210 50 A160 160 0 1 1 209 50'); animation: flowA 6s linear infinite;"></div>
-          <div class="packet" style="offset-path: path('M40 210 A170 80 0 1 1 39 210'); animation: flowA 7s linear infinite; animation-delay:1s;"></div>
-          <div class="packet" style="offset-path: path('M210 40 A80 170 0 1 1 209 40'); animation: flowB 6.5s linear infinite; animation-delay:2s;"></div>
-          <div class="packet" style="offset-path: path('M323 97 A160 160 0 1 1 322 97'); animation: flowA 5.7s linear infinite; animation-delay:0.6s;"></div>
-          <div class="packet" style="offset-path: path('M100 210 A170 80 0 1 1 99 210'); animation: flowB 7.3s linear infinite; animation-delay:2.2s;"></div>
-
-          <div class="net-node absolute left-[60%] top-[20%] h-3 w-3 rounded-full bg-white"></div>
-          <div class="net-node delay-1 absolute left-[30%] top-[60%] h-3 w-3 rounded-full bg-white"></div>
-          <div class="net-node delay-2 absolute left-[70%] top-[70%] h-2.5 w-2.5 rounded-full bg-white"></div>
-          <div class="net-node delay-3 absolute left-[40%] top-[30%] h-3 w-3 rounded-full bg-white"></div>
-          <div class="net-node delay-4 absolute left-[73%] top-[30%] h-3 w-3 rounded-full bg-white"></div>
-          <div class="net-node delay-5 absolute left-[17%] top-[50%] h-2.5 w-2.5 rounded-full bg-white"></div>
-          <div class="net-node delay-6 absolute left-[48%] top-[10%] h-2.5 w-2.5 rounded-full bg-white"></div>
-        </div>
+        <a href="#top" class="text-[11px] uppercase tracking-[0.32em] text-zinc-400">YUTO NIKI</a>
       </div>
-    </div>
-  </div>
-  </div>
 
-  <header class="sticky top-0 z-50 border-b border-white/8 bg-black/25 backdrop-blur-xl">
-    <div class="mx-auto flex w-[min(1120px,calc(100%-32px))] flex-col gap-4 py-4 md:flex-row md:items-center md:justify-between">
-      <a href="#top" class="text-[11px] uppercase tracking-[0.32em] text-zinc-400">Yuto Niki</a>
-      <nav class="flex flex-wrap items-center gap-3 text-sm text-zinc-300 md:gap-5">
+      <nav class="hidden items-center gap-5 text-sm text-zinc-300 md:flex">
         <a href="#about" class="transition hover:text-white" data-en="About" data-ja="自己紹介">About</a>
         <a href="#research" class="transition hover:text-white" data-en="Research" data-ja="研究">Research</a>
         <a href="#achievements" class="transition hover:text-white" data-en="Achievements" data-ja="成果">Achievements</a>
@@ -182,13 +153,23 @@
         <button id="langToggle" class="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-zinc-200 transition hover:-translate-y-0.5 hover:border-white/20 hover:bg-white/10">日本語</button>
       </nav>
     </div>
+
+    <div id="mobileMenu" class="pointer-events-none absolute inset-x-3 top-[calc(100%+10px)] z-50 rounded-3xl border border-white/10 bg-black/70 p-3 opacity-0 shadow-2xl backdrop-blur-xl transition duration-300 md:hidden">
+      <nav class="flex flex-col gap-2 text-sm text-zinc-200">
+        <a href="#about" class="rounded-2xl px-4 py-3 transition hover:bg-white/10" data-en="About" data-ja="自己紹介">About</a>
+        <a href="#research" class="rounded-2xl px-4 py-3 transition hover:bg-white/10" data-en="Research" data-ja="研究">Research</a>
+        <a href="#achievements" class="rounded-2xl px-4 py-3 transition hover:bg-white/10" data-en="Achievements" data-ja="成果">Achievements</a>
+        <a href="#links" class="rounded-2xl px-4 py-3 transition hover:bg-white/10" data-en="Links" data-ja="リンク集">Links</a>
+        <button id="langToggleMobile" class="mt-1 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-left text-zinc-100 transition hover:bg-white/10">日本語</button>
+      </nav>
+    </div>
   </header>
 
-  <main id="top">
-    <section class="flex min-h-[92vh] items-center py-10 md:py-16">
-      <div class="mx-auto grid w-[min(1120px,calc(100%-32px))] gap-14 md:grid-cols-[320px_1fr] md:items-center">
+  <main id="top" class="pt-24 md:pt-24">
+    <section class="flex min-h-[88svh] items-center py-8 md:min-h-[92vh] md:py-16">
+      <div class="mx-auto grid w-[min(1120px,calc(100%-24px))] md:w-[min(1120px,calc(100%-32px))] gap-14 md:grid-cols-[320px_1fr] md:items-center">
         <div class="flex justify-center md:justify-start">
-          <div class="group relative h-64 w-64 flex-shrink-0 md:h-72 md:w-72">
+          <div class="group relative h-40 w-40 flex-shrink-0 sm:h-52 sm:w-52 md:h-72 md:w-72">
             <div class="absolute inset-0 rounded-full bg-white/10 blur-2xl transition duration-500 group-hover:bg-white/15"></div>
             <div class="relative h-full w-full overflow-hidden rounded-full border border-white/15 bg-white/5 p-2 shadow-soft backdrop-blur-sm">
               <div class="h-full w-full overflow-hidden rounded-full border border-white/10 bg-zinc-900">
@@ -199,9 +180,9 @@
         </div>
 
         <div>
-          <div class="mb-5 inline-flex rounded-full border border-white/10 bg-white/5 px-4 py-2 text-[11px] uppercase tracking-[0.28em] text-zinc-300 backdrop-blur-sm" data-en="Master's Student / Researcher / Builder" data-ja="大学院生 / 研究者 / 開発者">Master's Student / Researcher / Builder</div>
-          <h1 class="text-hero font-semibold" data-en="Designing practical systems with networking and AI." data-ja="ネットワークとAIで、実用的なシステムを設計する。">Designing practical systems with networking and AI.</h1>
-          <p class="mt-6 max-w-3xl text-base leading-8 text-zinc-300 md:text-lg"
+          <div class="mb-4 inline-flex rounded-full border border-white/10 bg-white/5 px-3 py-2 text-[10px] uppercase tracking-[0.24em] text-zinc-300 backdrop-blur-sm md:mb-5 md:px-4 md:text-[11px] md:tracking-[0.28em]" data-en="Master's Student / Researcher / Builder" data-ja="大学院生 / 研究者 / 開発者">Master's Student / Researcher / Builder</div>
+          <h1 class="text-4xl font-semibold leading-[0.95] tracking-[-0.05em] sm:text-6xl md:text-hero" data-en="Designing practical systems with networking and AI." data-ja="ネットワークとAIで、実用的なシステムを設計する。">Designing practical systems with networking and AI.</h1>
+          <p class="mt-5 max-w-3xl text-[15px] leading-7 text-zinc-300 sm:text-base sm:leading-8 md:mt-6 md:text-lg"
              data-en="I build human-centered systems across networking, machine learning, embedded devices, and web interfaces. My work focuses on turning technical ideas into useful, reliable experiences."
              data-ja="ネットワーク、機械学習、組み込み、Webインターフェースを横断しながら、人のために機能するシステムを作っています。技術的なアイデアを、実際に役立つ体験へ落とし込むことを重視しています。">
             I build human-centered systems across networking, machine learning, embedded devices, and web interfaces. My work focuses on turning technical ideas into useful, reliable experiences.
@@ -210,7 +191,7 @@
             <a href="#research" class="rounded-full border border-white/10 bg-white text-black px-5 py-3 text-sm font-medium transition hover:-translate-y-0.5 hover:bg-zinc-200" data-en="Explore Research" data-ja="研究を見る">Explore Research</a>
             <a href="#links" class="rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm text-zinc-200 backdrop-blur-sm transition hover:-translate-y-0.5 hover:bg-white/10" data-en="Open Links" data-ja="リンクを見る">Open Links</a>
           </div>
-          <div class="mt-10 grid gap-4 sm:grid-cols-3">
+          <div class="mt-8 grid gap-3 sm:mt-10 sm:gap-4 sm:grid-cols-3">
             <div class="rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur-sm">
               <div class="text-2xl font-semibold">01</div>
               <div class="mt-1 text-sm text-zinc-400" data-en="Networking Research" data-ja="ネットワーク研究">Networking Research</div>
@@ -229,9 +210,9 @@
     </section>
 
     <section id="about" class="py-10 md:py-14">
-      <div class="mx-auto w-[min(1120px,calc(100%-32px))]">
+      <div class="mx-auto w-[min(1120px,calc(100%-24px))] md:w-[min(1120px,calc(100%-32px))]">
         <div class="mb-5 text-[11px] uppercase tracking-[0.32em] text-zinc-500" data-en="About" data-ja="自己紹介">About</div>
-        <div class="rounded-[32px] border border-white/10 bg-white/5 p-8 text-zinc-300 shadow-glow backdrop-blur-md md:p-10"
+        <div class="rounded-[28px] border border-white/10 bg-white/5 p-6 text-zinc-300 shadow-glow backdrop-blur-md md:rounded-[32px] md:p-10"
              data-en="I am a master's student at Okayama University with interests in computer systems, networking, machine learning, and human-centered design. I enjoy combining research and implementation, especially when the result can be used in real environments."
              data-ja="岡山大学の大学院生として、コンピュータシステム、ネットワーク、機械学習、人間中心設計に関心を持っています。研究と実装の両方を行き来しながら、実環境で役立つ形に仕上げることを大切にしています。">
           I am a master's student at Okayama University with interests in computer systems, networking, machine learning, and human-centered design. I enjoy combining research and implementation, especially when the result can be used in real environments.
@@ -240,13 +221,13 @@
     </section>
 
     <section id="research" class="py-10 md:py-14">
-      <div class="mx-auto w-[min(1120px,calc(100%-32px))]">
+      <div class="mx-auto w-[min(1120px,calc(100%-24px))] md:w-[min(1120px,calc(100%-32px))]">
         <div class="mb-5 text-[11px] uppercase tracking-[0.32em] text-zinc-500" data-en="Research" data-ja="研究">Research</div>
         <div class="grid gap-5 lg:grid-cols-2">
-          <article class="group rounded-[28px] border border-white/10 bg-white/5 p-7 shadow-glow backdrop-blur-md transition duration-300 hover:-translate-y-1 hover:border-white/20 hover:bg-white/[0.07]">
+          <article class="group rounded-[24px] border border-white/10 bg-white/5 p-5 shadow-glow backdrop-blur-md transition duration-300 hover:-translate-y-1 hover:border-white/20 hover:bg-white/[0.07] md:rounded-[28px] md:p-7">
             <div class="mb-4 text-xs uppercase tracking-[0.24em] text-zinc-500">01</div>
-            <h3 class="text-2xl font-medium tracking-tight" data-en="Multipath TCP Fairness" data-ja="Multipath TCP の公平性">Multipath TCP Fairness</h3>
-            <p class="mt-4 leading-8 text-zinc-400"
+            <h3 class="text-xl font-medium tracking-tight md:text-2xl" data-en="Multipath TCP Fairness" data-ja="Multipath TCP の公平性">Multipath TCP Fairness</h3>
+            <p class="mt-4 text-[15px] leading-7 text-zinc-400 md:leading-8"
                data-en="Research on improving throughput fairness between Multipath TCP and standard TCP under heterogeneous network conditions, with a focus on congestion control behavior and practical evaluation."
                data-ja="異種ネットワーク条件下において、Multipath TCP と通常の TCP のスループット公平性を改善する研究です。輻輳制御の挙動と実験評価を重視しています。">
               Research on improving throughput fairness between Multipath TCP and standard TCP under heterogeneous network conditions, with a focus on congestion control behavior and practical evaluation.
@@ -258,10 +239,10 @@
             </div>
           </article>
 
-          <article class="group rounded-[28px] border border-white/10 bg-white/5 p-7 shadow-glow backdrop-blur-md transition duration-300 hover:-translate-y-1 hover:border-white/20 hover:bg-white/[0.07]">
+          <article class="group rounded-[24px] border border-white/10 bg-white/5 p-5 shadow-glow backdrop-blur-md transition duration-300 hover:-translate-y-1 hover:border-white/20 hover:bg-white/[0.07] md:rounded-[28px] md:p-7">
             <div class="mb-4 text-xs uppercase tracking-[0.24em] text-zinc-500">02</div>
-            <h3 class="text-2xl font-medium tracking-tight" data-en="Applied AI and Human-Centered Systems" data-ja="AI と人間中心システム">Applied AI and Human-Centered Systems</h3>
-            <p class="mt-4 leading-8 text-zinc-400"
+            <h3 class="text-xl font-medium tracking-tight md:text-2xl" data-en="Applied AI and Human-Centered Systems" data-ja="AI と人間中心システム">Applied AI and Human-Centered Systems</h3>
+            <p class="mt-4 text-[15px] leading-7 text-zinc-400 md:leading-8"
                data-en="Projects that combine AI, embedded devices, and web systems for practical environments such as museums, surveys, assistive experiences, and on-site operation support."
                data-ja="AI、組み込み機器、Webシステムを組み合わせ、美術館、アンケート、支援体験、現場運用支援などの実環境へ応用するプロジェクトです。">
               Projects that combine AI, embedded devices, and web systems for practical environments such as museums, surveys, assistive experiences, and on-site operation support.
@@ -277,33 +258,33 @@
     </section>
 
     <section id="achievements" class="py-10 md:py-14">
-      <div class="mx-auto w-[min(1120px,calc(100%-32px))]">
+      <div class="mx-auto w-[min(1120px,calc(100%-24px))] md:w-[min(1120px,calc(100%-32px))]">
         <div class="mb-5 text-[11px] uppercase tracking-[0.32em] text-zinc-500" data-en="Achievements" data-ja="成果">Achievements</div>
         <div class="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-          <article class="rounded-[28px] border border-white/10 bg-white/5 p-7 backdrop-blur-md transition hover:bg-white/[0.07]">
+          <article class="rounded-[24px] border border-white/10 bg-white/5 p-5 backdrop-blur-md transition hover:bg-white/[0.07] md:rounded-[28px] md:p-7">
             <div class="text-sm text-zinc-500">Project</div>
-            <h3 class="mt-2 text-xl font-medium" data-en="Museum DX Project" data-ja="美術館DXプロジェクト">Museum DX Project</h3>
-            <p class="mt-3 leading-7 text-zinc-400"
+            <h3 class="mt-2 text-lg font-medium md:text-xl" data-en="Museum DX Project" data-ja="美術館DXプロジェクト">Museum DX Project</h3>
+            <p class="mt-3 text-[15px] leading-7 text-zinc-400"
                data-en="Development of accessible digital experiences and support systems for museum visitors."
                data-ja="美術館来館者のためのアクセシブルなデジタル体験と支援システムの開発。">
               Development of accessible digital experiences and support systems for museum visitors.
             </p>
           </article>
 
-          <article class="rounded-[28px] border border-white/10 bg-white/5 p-7 backdrop-blur-md transition hover:bg-white/[0.07]">
+          <article class="rounded-[24px] border border-white/10 bg-white/5 p-5 backdrop-blur-md transition hover:bg-white/[0.07] md:rounded-[28px] md:p-7">
             <div class="text-sm text-zinc-500">Research</div>
-            <h3 class="mt-2 text-xl font-medium" data-en="Network Experimentation" data-ja="ネットワーク実験">Network Experimentation</h3>
-            <p class="mt-3 leading-7 text-zinc-400"
+            <h3 class="mt-2 text-lg font-medium md:text-xl" data-en="Network Experimentation" data-ja="ネットワーク実験">Network Experimentation</h3>
+            <p class="mt-3 text-[15px] leading-7 text-zinc-400"
                data-en="Evaluation of protocol behavior under varying RTT, queue, and multi-flow conditions."
                data-ja="RTT、キュー、マルチフロー条件を変化させた際のプロトコル挙動の評価。">
               Evaluation of protocol behavior under varying RTT, queue, and multi-flow conditions.
             </p>
           </article>
 
-          <article class="rounded-[28px] border border-white/10 bg-white/5 p-7 backdrop-blur-md transition hover:bg-white/[0.07] md:col-span-2 xl:col-span-1">
+          <article class="rounded-[24px] border border-white/10 bg-white/5 p-5 backdrop-blur-md transition hover:bg-white/[0.07] md:rounded-[28px] md:p-7 md:col-span-2 xl:col-span-1">
             <div class="text-sm text-zinc-500">System</div>
-            <h3 class="mt-2 text-xl font-medium" data-en="Prototype Development" data-ja="プロトタイプ開発">Prototype Development</h3>
-            <p class="mt-3 leading-7 text-zinc-400"
+            <h3 class="mt-2 text-lg font-medium md:text-xl" data-en="Prototype Development" data-ja="プロトタイプ開発">Prototype Development</h3>
+            <p class="mt-3 text-[15px] leading-7 text-zinc-400"
                data-en="Building end-to-end prototypes with Raspberry Pi, AI models, and modern web interfaces."
                data-ja="Raspberry Pi、AIモデル、モダンなWeb UIを用いたエンドツーエンドの試作開発。">
               Building end-to-end prototypes with Raspberry Pi, AI models, and modern web interfaces.
@@ -314,22 +295,22 @@
     </section>
 
     <section id="links" class="py-10 md:py-14">
-      <div class="mx-auto w-[min(1120px,calc(100%-32px))]">
+      <div class="mx-auto w-[min(1120px,calc(100%-24px))] md:w-[min(1120px,calc(100%-32px))]">
         <div class="mb-5 text-[11px] uppercase tracking-[0.32em] text-zinc-500" data-en="Links" data-ja="リンク集">Links</div>
         <div class="grid gap-5 md:grid-cols-3">
-          <a href="https://github.com/yourname" target="_blank" rel="noreferrer" class="group rounded-[28px] border border-white/10 bg-white/5 p-7 backdrop-blur-md transition duration-300 hover:-translate-y-1 hover:border-white/20 hover:bg-white/[0.08]">
+          <a href="https://github.com/yourname" target="_blank" rel="noreferrer" class="group rounded-[24px] border border-white/10 bg-white/5 p-5 backdrop-blur-md transition duration-300 hover:-translate-y-1 hover:border-white/20 hover:bg-white/[0.08] md:rounded-[28px] md:p-7">
             <div class="text-sm text-zinc-500">01</div>
-            <div class="mt-3 text-2xl font-medium">GitHub</div>
+            <div class="mt-3 text-xl font-medium md:text-2xl">GitHub</div>
             <div class="mt-3 leading-7 text-zinc-400" data-en="Source code, experiments, and project repositories." data-ja="ソースコード、実験、プロジェクトのリポジトリ。">Source code, experiments, and project repositories.</div>
           </a>
 
-          <a href="https://www.linkedin.com/in/yourname" target="_blank" rel="noreferrer" class="group rounded-[28px] border border-white/10 bg-white/5 p-7 backdrop-blur-md transition duration-300 hover:-translate-y-1 hover:border-white/20 hover:bg-white/[0.08]">
+          <a href="https://www.linkedin.com/in/yourname" target="_blank" rel="noreferrer" class="group rounded-[24px] border border-white/10 bg-white/5 p-5 backdrop-blur-md transition duration-300 hover:-translate-y-1 hover:border-white/20 hover:bg-white/[0.08] md:rounded-[28px] md:p-7">
             <div class="text-sm text-zinc-500">02</div>
-            <div class="mt-3 text-2xl font-medium">LinkedIn</div>
+            <div class="mt-3 text-xl font-medium md:text-2xl">LinkedIn</div>
             <div class="mt-3 leading-7 text-zinc-400" data-en="Professional background, interests, and activities." data-ja="経歴、関心分野、活動内容。">Professional background, interests, and activities.</div>
           </a>
 
-          <a href="https://example.com" target="_blank" rel="noreferrer" class="group rounded-[28px] border border-white/10 bg-white/5 p-7 backdrop-blur-md transition duration-300 hover:-translate-y-1 hover:border-white/20 hover:bg-white/[0.08]">
+          <a href="https://example.com" target="_blank" rel="noreferrer" class="group rounded-[24px] border border-white/10 bg-white/5 p-5 backdrop-blur-md transition duration-300 hover:-translate-y-1 hover:border-white/20 hover:bg-white/[0.08] md:rounded-[28px] md:p-7">
             <div class="text-sm text-zinc-500">03</div>
             <div class="mt-3 text-2xl font-medium" data-en="Other Link" data-ja="その他リンク">Other Link</div>
             <div class="mt-3 leading-7 text-zinc-400" data-en="Lab page, publications, blog, or related resources." data-ja="研究室ページ、業績、ブログ、関連資料。">Lab page, publications, blog, or related resources.</div>
@@ -340,7 +321,7 @@
   </main>
 
   <footer class="px-4 py-12 text-sm text-zinc-500 md:py-16">
-    <div class="mx-auto flex w-[min(1120px,calc(100%-32px))] flex-col gap-3 border-t border-white/10 pt-8 md:flex-row md:items-center md:justify-between">
+    <div class="mx-auto flex w-[min(1120px,calc(100%-24px))] md:w-[min(1120px,calc(100%-32px))] flex-col gap-3 border-t border-white/10 pt-8 md:flex-row md:items-center md:justify-between">
       <div data-en="© 2026 Yuto Niki. All rights reserved." data-ja="© 2026 仁木 優斗">© 2026 Yuto Niki. All rights reserved.</div>
       <div class="text-zinc-600" data-en="Built with GitHub Pages and Tailwind CSS." data-ja="GitHub Pages と Tailwind CSS で構築。">Built with GitHub Pages and Tailwind CSS.</div>
     </div>
@@ -348,6 +329,9 @@
 
   <script>
     const toggleButton = document.getElementById('langToggle');
+    const toggleButtonMobile = document.getElementById('langToggleMobile');
+    const menuToggle = document.getElementById('menuToggle');
+    const mobileMenu = document.getElementById('mobileMenu');
     let currentLang = 'en';
 
     function applyLanguage(lang) {
@@ -355,27 +339,97 @@
       document.querySelectorAll('[data-en]').forEach((el) => {
         el.textContent = el.dataset[lang];
       });
-      toggleButton.textContent = lang === 'en' ? '日本語' : 'English';
+      if (toggleButton) toggleButton.textContent = lang === 'en' ? '日本語' : 'English';
+      if (toggleButtonMobile) toggleButtonMobile.textContent = lang === 'en' ? '日本語' : 'English';
       currentLang = lang;
     }
 
-    toggleButton.addEventListener('click', () => {
+    const toggleLanguage = () => {
       applyLanguage(currentLang === 'en' ? 'ja' : 'en');
-    });
+    };
+
+    if (toggleButton) toggleButton.addEventListener('click', toggleLanguage);
+    if (toggleButtonMobile) toggleButtonMobile.addEventListener('click', toggleLanguage);
+
+    const closeMobileMenu = () => {
+      if (!mobileMenu || !menuToggle) return;
+      mobileMenu.classList.add('pointer-events-none', 'opacity-0', '-translate-y-2');
+      mobileMenu.classList.remove('translate-y-0');
+      menuToggle.setAttribute('aria-expanded', 'false');
+    };
+
+    const openMobileMenu = () => {
+      if (!mobileMenu || !menuToggle) return;
+      mobileMenu.classList.remove('pointer-events-none', 'opacity-0', '-translate-y-2');
+      mobileMenu.classList.add('translate-y-0');
+      menuToggle.setAttribute('aria-expanded', 'true');
+    };
+
+    if (menuToggle && mobileMenu) {
+      mobileMenu.classList.add('-translate-y-2');
+      menuToggle.addEventListener('click', () => {
+        const isOpen = menuToggle.getAttribute('aria-expanded') === 'true';
+        if (isOpen) {
+          closeMobileMenu();
+          menuToggle.classList.remove('menu-open');
+        } else {
+          openMobileMenu();
+          menuToggle.classList.add('menu-open');
+        }
+      });
+
+      mobileMenu.querySelectorAll('a').forEach((link) => {
+        link.addEventListener('click', closeMobileMenu);
+      });
+
+      window.addEventListener('resize', () => {
+        if (window.innerWidth >= 768) closeMobileMenu();
+      });
+
+      document.addEventListener('click', (event) => {
+        if (!mobileMenu.contains(event.target) && !menuToggle.contains(event.target)) {
+          closeMobileMenu();
+        }
+      });
+    }
 
     applyLanguage('en');
 
-    const backgroundHero = document.getElementById('backgroundHero');
-    const updateHeroFade = () => {
-      if (!backgroundHero) return;
-      const fadeStart = 0;
-      const fadeEnd = 420;
-      const progress = Math.min(Math.max((window.scrollY - fadeStart) / (fadeEnd - fadeStart), 0), 1);
-      backgroundHero.style.opacity = String(1 - progress);
+    const siteHeader = document.getElementById('siteHeader');
+    let lastScrollY = window.scrollY;
+
+    const updateHeaderVisibility = () => {
+      if (!siteHeader) return;
+
+      const currentScrollY = window.scrollY;
+      const delta = currentScrollY - lastScrollY;
+      const isMobile = window.innerWidth < 768;
+
+      if (currentScrollY <= 20) {
+        siteHeader.classList.remove('-translate-y-full');
+      } else if (delta > (isMobile ? 4 : 8)) {
+        siteHeader.classList.add('-translate-y-full');
+      } else if (delta < (isMobile ? -4 : -8)) {
+        siteHeader.classList.remove('-translate-y-full');
+      }
+
+      lastScrollY = currentScrollY;
     };
 
-    window.addEventListener('scroll', updateHeroFade, { passive: true });
-    updateHeroFade();
+    window.addEventListener('scroll', () => {
+      updateHeaderVisibility();
+      if (window.innerWidth < 768) {
+        const currentScrollY = window.scrollY;
+        if (currentScrollY > 40 && mobileMenu && menuToggle && menuToggle.getAttribute('aria-expanded') === 'true') {
+          mobileMenu.classList.add('pointer-events-none', 'opacity-0', '-translate-y-2');
+          mobileMenu.classList.remove('translate-y-0');
+          menuToggle.setAttribute('aria-expanded', 'false');
+        }
+      }
+    }, { passive: true });
+    updateHeaderVisibility();
+
+    
   </script>
 </body>
 </html>
